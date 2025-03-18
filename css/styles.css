@@ -1,0 +1,37 @@
+﻿.dynamic-height {
+    min-height: 100vh;
+    transition: min-height 0.3s ease;
+}
+
+.photoModal {
+    z-index: -100;
+}
+
+#overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 40;
+    display: none;
+}
+
+iframe[src*="somee.com"],
+script[src*="ads.mgmt.somee.com"],
+center a[href*="somee.com"] {
+    display: none !important;
+}
+
+div[style*="height: 65px;"] {
+    display: none;
+}
+
+div[style*="opacity: 0.9; z-index: 2147483647; position: fixed; left: 0px; bottom: 0px; height: 65px; right: 0px; display: block; width: 100%; background-color: #202020; margin: 0px; padding: 0px;"] {
+    display: none !important;
+}
+
+center {
+    display: none !important;
+}

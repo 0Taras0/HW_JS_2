@@ -1,0 +1,19 @@
+﻿<div id="overlay"></div>
+
+<div id="photoModal" class="hidden fixed inset-0 bg-opacity-100 flex items-center justify-center z-50">
+    <div class="bg-white p-6 rounded-lg max-w-lg relative">
+        <h2 class="text-xl font-bold mb-4">Edit Profile Picture</h2>
+        <input type="file" id="uploadImage" accept="image/*" class="mb-4">
+        <div class="w-full h-64 overflow-hidden flex justify-center">
+            <img id="cropperImage" src="" class="max-w-full">
+        </div>
+        <div class="mt-4 flex justify-between">
+            <button id="rotateLeft" class="bg-blue-500 text-white py-2 px-4 rounded-lg cursor-pointer">⟲</button>
+            <button id="rotateRight" class="bg-blue-500 text-white py-2 px-4 rounded-lg cursor-pointer">⟳</button>
+        </div>
+        <div class="mt-4 flex justify-end">
+            <button id="saveCrop" class="bg-green-500 text-white py-2 px-4 rounded-lg mr-2 cursor-pointer">Save</button>
+            <button id="closeModal" class="bg-gray-500 text-white py-2 px-4 rounded-lg cursor-pointer">Cancel</button>
+        </div>
+    </div>
+</div>
