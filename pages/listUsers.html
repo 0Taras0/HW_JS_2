@@ -6,14 +6,41 @@
     <link rel="icon" type="image/png" href="https://cdn.simpleicons.org/reddit/white">
     <link href="https://cdn.jsdelivr.net/npm/flowbite@3.1.2/dist/flowbite.min.css" rel="stylesheet" />
     <link href="/css/styles.css" rel="stylesheet" />
-    <link href="/css/cropper.min.css" rel="stylesheet" />
     <script src="/js/site.js"></script>
-    <script src="/js/cropper.min.js"></script>
-    <title>Deddit list of users</title>
+    <script src="/js/userListScript.js"></script>
+    <title>List of users</title>
 </head>
-<body>
+<body class="dark:bg-gray-900">
     <script>loadDOM('/partials/_header.html')</script>
 
+    <div class="p-6 dark:bg-gray-900 relative overflow-x-auto shadow-md sm:rounded-lg dynamic-height">
+        <div class="flex flex-col md:flex-row items-center justify-between space-y-4 md:space-y-0 pb-4 bg-white dark:bg-gray-900">
+            <div class="w-full md:w-auto relative">
+                <input type="text" id="table-search-users" class="block w-full md:w-80 p-2 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500" placeholder="Search for users">
+                <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
+                    <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m19 19-4-4m0-7A7 7 0 1 1 1 8a7 7 0 0 1 14 0Z" />
+                    </svg>
+                </div>
+            </div>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+                <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-3">Name</th>
+                        <th scope="col" class="px-6 py-3">Email</th>
+                        <th scope="col" class="px-6 py-3">Phone</th>
+                        <th scope="col" class="px-6 py-3">Actions</th>
+                        <th scope="col" class="px-6 py-3">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </div>
+    </div>
 
     <script>loadDOM('/partials/_footer.html')</script>
 

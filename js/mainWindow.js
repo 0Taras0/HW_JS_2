@@ -1,18 +1,6 @@
-﻿const profileImage = document.getElementById("profileImage");
-const editPhotoBtn = document.getElementById("editPhotoBtn");
-const photoModal = document.getElementById("photoModal");
-const uploadImage = document.getElementById("uploadImage");
-const cropperImage = document.getElementById("cropperImage");
-const saveCrop = document.getElementById("saveCrop");
-const closeModal = document.getElementById("closeModal");
-const overlay = document.getElementById("overlay");
-
-let cropper;
-let uploadImageURL = profileImage.src;
-let initialImageSrc = profileImage.src;
-
-document.getElementById("submitBtn").addEventListener("click", (event) => {
+﻿document.getElementById("submitBtn").addEventListener("click", async function (event) {
     event.preventDefault();
+    clearErrors();
     const email = document.getElementById("email").value.trim();
     const firstName = document.getElementById("first_name").value.trim();
     const lastName = document.getElementById("last_name").value.trim();
@@ -22,94 +10,76 @@ document.getElementById("submitBtn").addEventListener("click", (event) => {
     const remember = document.getElementById("remember").checked;
     const profileImageSrc = document.getElementById("profileImage").src;
 
-    if (!email || !firstName || !lastName || !phone || !password || !confirmPassword) {
-        return;
-    }
-
-    if (password !== confirmPassword) {
-        alert("Паролі не співпадають.");
-        return;
-    }
-
     if (!remember) {
-        alert("Ви повинні погодитися з умовами.");
+        remember_error.hidden = false;
+        remember_error.textContent = "Ви повинні погодитися з умовами.";
         return;
     }
 
     if (!profileImageSrc || profileImageSrc.includes("centralcalshrm.org/wp-content/uploads/2021/08/profile-icon-empty.png")) {
-        alert("Будь ласка, виберіть зображення профілю.");
+        profileImage_error.hidden = false;
+        profileImage_error.textContent = "Будь ласка, виберіть зображення профілю.";
         return;
     }
 
-    window.location.href = "/pages/listUsers.html";
+    let users = JSON.parse(localStorage.getItem("users")) || [];
+
+    if (users.some(user => user.email === email)) {
+        email_error.hidden = false;
+        email_error.textContent = "Користувач з таким email вже існує!";
+        return;
+    }
+
+    const user = {
+        email: email,
+        firstName: firstName,
+        secondName: lastName,
+        phone: phone,
+        password: password,
+        confirmPassword: confirmPassword,
+        photo: profileImageSrc
+    }
+
+    try {
+        const response = await axios.post('https://goose.itstep.click/api/Account/register', user);
+        users.push(user);
+        localStorage.setItem("users", JSON.stringify(users));
+        window.location.href = '/pages/listUsers.html';
+    } catch (error) {
+        handleError(error.response?.data.errors);
+    }
 });
 
+function handleError(responseText) {
+    const response = responseText;
+    if (response) {
+        for (const field in response) {
+            if (response.hasOwnProperty(field)) {
+                const fieldErrors = response[field];
 
-document.getElementById("rotateLeft").addEventListener("click", () => {
-    if (cropper) cropper.rotate(-90);
-});
-
-document.getElementById("rotateRight").addEventListener("click", () => {
-    if (cropper) cropper.rotate(90);
-});
-
-editPhotoBtn.addEventListener("click", () => {
-    initialImageSrc = profileImage.src;
-    cropperImage.src = initialImageSrc;
-
-    if (cropper) cropper.destroy();
-
-    cropper = new Cropper(cropperImage, {
-        aspectRatio: 1,
-        viewMode: 1,
-        responsive: true
-    });
-
-    photoModal.classList.remove("hidden");
-    overlay.style.display = "block";
-    document.body.classList.add("overflow-hidden");
-});
-
-closeModal.addEventListener("click", () => {
-    cropperImage.src = initialImageSrc;
-    uploadImage.value = "";
-
-    photoModal.classList.add("hidden");
-    overlay.style.display = "none";
-    document.body.classList.remove("overflow-hidden");
-});
-
-uploadImage.addEventListener("change", (event) => {
-    const { files } = event.target;
-    const file = files[0];
-
-    if (file && /^image\/\w+/.test(file.type)) {
-        if (uploadImageURL) {
-            URL.revokeObjectURL(uploadImageURL);
+                errorMessages = fieldErrors;
+                switch (field) {
+                    case "email": { email_error.hidden = false; email_error.textContent = errorMessages; break; }
+                    case "firstName": { first_name_error.hidden = false; first_name_error.textContent = errorMessages; break; }
+                    case "secondName": { last_name_error.hidden = false; last_name_error.textContent = errorMessages; break; }
+                    case "photo": { profileImage_error.hidden = false; profileImage_error.textContent = errorMessages; break; }
+                    case "phone": { phone_error.hidden = false; phone_error.textContent = errorMessages; break; }
+                    case "password": { password_error.hidden = false; password_error.textContent = errorMessages; break; }
+                    case "confirmPassword": { confirm_password_error.hidden = false; confirm_password_error.textContent = errorMessages; break; }
+                }
+            }
         }
-
-        cropperImage.src = uploadImageURL = URL.createObjectURL(file);
-
-        if (cropper) cropper.destroy();
-
-        cropper = new Cropper(cropperImage, {
-            aspectRatio: 1,
-            viewMode: 1,
-            responsive: true
-        });
-
-        uploadImage.value = "";
     }
-});
+}
 
-saveCrop.addEventListener("click", () => {
-    if (cropper) {
-        const croppedImage = cropper.getCroppedCanvas().toDataURL("image/png");
-        profileImage.src = croppedImage;
-        initialImageSrc = croppedImage;
-
-        photoModal.classList.add("hidden");
-        overlay.style.display = "none";
-        document.body.classList.remove("overflow-hidden");
-    }
-});
+function clearErrors() {
+    email_error.hidden = true;
+    first_name_error.hidden = true;
+    last_name_error.hidden = true;
+    profileImage_error.hidden = true;
+    phone_error.hidden = true;
+    password_error.hidden = true;
+    confirm_password_error.hidden = true;
+    profileImage_error.hidden = true;
+    remember_error.hidden = true;
+}
