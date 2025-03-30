@@ -44,7 +44,9 @@
         const response = await axios.post('https://goose.itstep.click/api/Account/register', user);
         users.push(user);
         localStorage.setItem("users", JSON.stringify(users));
-        window.location.href = '/pages/listUsers.html';
+        localStorage.setItem("isLoggedIn", "true");
+        localStorage.setItem("currentUser", JSON.stringify(user));
+        window.location.href = '/pages/profile.html';
     } catch (error) {
         handleError(error.response?.data.errors);
     }
