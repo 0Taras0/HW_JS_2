@@ -16,7 +16,12 @@
         localStorage.setItem("isLoggedIn", "true");
         localStorage.setItem("token", response.data.token);
 
-        window.location.href = '/pages/profile.html';
+        const userData = JSON.parse(atob(response.data.token.split('.')[1]));
+        if (userData.roles.includes("admin")) {
+            window.location.href = '/pages/admin/adminPage.html';
+        } else {
+            window.location.href = '/pages/profile.html';
+        }
     } catch (error) {
         handleError(error.response?.data.errors);
     }
