@@ -56,37 +56,37 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener("DOMContentLoaded", function () {
     const menuItems = document.querySelectorAll("[data-url]");
-    const mainWindow = document.getElementById("mainAminWindow");
+    //const mainWindow = document.getElementById("mainAminWindow");
 
-    const loadContent = async (url) => {
-        try {
-            const response = await fetch(url);
-            if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
+    //const loadContent = async (url) => {
+    //    try {
+    //        const response = await fetch(url);
+    //        if (!response.ok) throw new Error(`HTTP error! Status: ${response.status}`);
 
-            const text = await response.text();
+    //        const text = await response.text();
 
-            // Вставляємо HTML в mainWindow
-            mainWindow.innerHTML = text;
+    //        // Вставляємо HTML в mainWindow
+    //        mainWindow.innerHTML = text;
 
-            // Тепер обробляємо скрипти
-            mainWindow.querySelectorAll("script").forEach((script) => {
-                const newScript = document.createElement("script");
+    //        // Тепер обробляємо скрипти
+    //        mainWindow.querySelectorAll("script").forEach((script) => {
+    //            const newScript = document.createElement("script");
 
-                // Якщо є атрибут src, додаємо як зовнішній скрипт
-                if (script.src) {
-                    newScript.src = script.src;
-                } else {
-                    // Вставляємо внутрішній скрипт
-                    newScript.textContent = script.textContent;
-                }
+    //            // Якщо є атрибут src, додаємо як зовнішній скрипт
+    //            if (script.src) {
+    //                newScript.src = script.src;
+    //            } else {
+    //                // Вставляємо внутрішній скрипт
+    //                newScript.textContent = script.textContent;
+    //            }
 
-                // Додаємо скрипт у body (щоб він спрацював)
-                document.body.appendChild(newScript).parentNode.removeChild(newScript);
-            });
-        } catch (error) {
-            console.error("Помилка завантаження:", error);
-        }
-    };
+    //            // Додаємо скрипт у body (щоб він спрацював)
+    //            document.body.appendChild(newScript).parentNode.removeChild(newScript);
+    //        });
+    //    } catch (error) {
+    //        console.error("Помилка завантаження:", error);
+    //    }
+    //};
 
 
     menuItems.forEach((item) => {
@@ -94,6 +94,7 @@ document.addEventListener("DOMContentLoaded", function () {
             event.preventDefault();
 
             const url = this.getAttribute("data-url");
+            location.href = url;
             loadContent(url);
         });
     });

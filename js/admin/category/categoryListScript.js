@@ -35,10 +35,8 @@ async function fetchAndRender() {
     const url = `https://goose.itstep.click/api/Categories/search?${query}`;
 
     try {
-        const response = await fetch(url);
-        if (!response.ok) throw new Error("Не вдалося отримати дані");
-
-        const data = await response.json();
+        const response = await axios.get(url);
+        const data = response.data;
         const tbody = document.getElementById('table-body');
         tbody.innerHTML = '';
 
@@ -56,10 +54,11 @@ async function fetchAndRender() {
                     <td class="px-6 py-4">${cat.urlSlug}</td>
                     <td class="px-6 py-4">${cat.priority}</td>
                     <td class="px-6 py-4">
-                        <a href="#" class="font-medium text-blue-600 dark:text-blue-400 hover:underline">Edit</a> |
-                        <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline">Delete</a>
+                        <a href="/pages/admin/category/editCategory.html?id=${cat.id}" class="font-medium text-blue-600 dark:text-blue-400 hover:underline" data-id="${cat.id}">Edit</a> |
+                        <a href="#" class="font-medium text-red-600 dark:text-red-500 hover:underline" data-id="${cat.id}">Delete</a>
                     </td>
                 `;
+
                 tbody.appendChild(row);
             });
         }
@@ -71,7 +70,7 @@ async function fetchAndRender() {
         document.getElementById('next-page').disabled = currentPage >= lastPage;
 
     } catch (err) {
-        console.error(err);
+        console.error("Помилка при отриманні даних:", err);
     }
 }
 
@@ -98,6 +97,7 @@ document.getElementById('next-page').addEventListener('click', () => {
         window.scrollTo(0, 0);
     }
 });
+
 window.addEventListener('DOMContentLoaded', () => {
     getParamsFromUrl();
     fetchAndRender();
